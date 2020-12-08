@@ -10,8 +10,8 @@
 #														#
 #################################################################################################################
 
-# Variables a usar:
 
+# Variables a usar:
 attrOne=$1 #Primera opcion pasada al script 
 attrSec=$2 #segunda opcion pasada al script
 
@@ -66,20 +66,20 @@ then
 	if [ "$attrSec" == 'l' ] #chequeamos que la opcion pasada sea la pantalla Izquierda (l: left).
 	then
 		echo "Invocada la orden de Mantener activa solo la pantalla Izquierda."
-		xrandr --output ${intern} ${posExtern} --rotate normal
+		#xrandr --output ${intern} ${posExtern} --rotate normal
                 xrandr --output ${extern} --primary ${modeExtern} ${posExtern} --rotate normal --output ${intern} --off --output VIRTUAL1 --off
 
 	elif [ "$attrSec" == 'r' ] #chequeamos que el monitor escogido sea el Izquierdo.
 	then
 		echo "Invocada la orden de Mantener activa solo la pantalla Derecha (Laptop)."
 
-		xrandr --output ${extern} --rotate normal
+		#xrandr --output ${extern} --rotate normal
                 xrandr --output ${intern} --primary ${modeIntern} ${posIntern} --rotate normal --output ${extern} --off --output VIRTUAL1 --off
 
 	else
 		#Si no se escribe el segundo parametro asumimos que se desea activar por defecto ambas pantallas.
 		echo "Invocada orden por defecto de mantener encendida ambas pantallas."
-                xrandr --output ${intern} ${modeIntern} ${posIntern} --rotate normal --output ${extern} --primary ${modeExtern} ${posExtern} --rotate normal --auto --output VIRTUAL1 --off
+                xrandr --output ${intern} --primary ${modeIntern} ${posIntern} --rotate normal --output ${extern} ${modeExtern} ${posExtern} --rotate normal --auto --output VIRTUAL1 --off
 	fi
 
 elif [ "$attrOne" == '-p' ] #Validamos que la opcion introducida sea la de encender una de las pantallas apagadas (-p: power)
@@ -87,7 +87,7 @@ then
 	if [ "$attrSec" == 'l' ] #chequeamos que se este procurando encender la pantalla izquierda. 
 	then
 		echo "Emitida orden de encender (-p: power) la pantalla Izquierda"
-                xrandr --output ${intern} ${modeIntern} ${posIntern} --rotate normal --output ${extern} --primary ${modeExtern} ${posExtern} --rotate normal --auto --output VIRTUAL1 --off
+                xrandr --output ${intern} --primary ${modeIntern} ${posIntern} --rotate normal --output ${extern} ${modeExtern} ${posExtern} --rotate normal --auto --output VIRTUAL1 --off
 		
 	elif [ "$attrSec" == 'r' ] #chequeamos que se este procurando encender la pantalla derecha.
 	then
@@ -99,9 +99,9 @@ then
 		echo "Opcion invalida, vuelva a repetir la instruccion asegurandose que usa '-l (left)' o '-r (right)'."
 	fi
 else
-		#Si no se escribe opcion alguna al correr el script entonces se asume que se desea por defecto ambos monitores encendidos
-                echo "Invocada orden por defecto de mantener encendida ambas pantallas."
-                xrandr --output ${intern} ${modeIntern} ${posIntern} --rotate normal --output ${extern} --primary ${modeExtern} ${posExtern} --rotate normal --auto --output VIRTUAL1 --off
+		#Si no se escribe opcion alguna al correr el script entonces se asume que se desea por defecto ambos monitores encendidos, Laptop abajo centrada y principal
+                echo "${intern} definida pantalla principal, centrada y abajo de ${extern}."
+                xrandr --output ${intern} --primary ${modeIntern} --pos 717x1080 --rotate normal --output ${extern} ${modeExtern} ${posExtern} --rotate normal --output VIRTUAL1 --off
 
 fi
 
@@ -115,3 +115,8 @@ if xrandr | grep "${extern} disconnected"
                 xrandr --output ${intern} --primary ${modeIntern} ${posIntern} --rotate normal --output ${extern} --off --output VIRTUAL1 --off
 		echo "Apagando el monitor ${extern}"
 fi
+
+
+# definiendo el Background 
+nitrogen --set-zoom-fill wallpaper/904.jpg
+
